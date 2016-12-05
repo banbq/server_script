@@ -11,15 +11,19 @@ yum install -y php php-fpm php-bcmatch php-gd php-mbstring php-mcrypt php-mysql
 #设置用户组
 groupadd -f www 
 useradd -s /sbin/nologin -g www nginx 
-wget "https://raw.githubusercontent.com/banbq/server_script/master/nginx/app_sample.conf" -O /etc/nginx/conf.d/app.conf
+#设置防火墙
+firewall-cmd --add-port=80/tcp --permanent
+firewall-cmd --reload
+#创建测试文件
 mkdir /var/www/html
 echo "<?php echo 1; phpinfo();?>" >> /var/www/html/test.php
 #提示用户修改配置
+wget "https://raw.githubusercontent.com/banbq/server_script/master/nginx/app_sample.conf" -O /etc/nginx/conf.d/app.conf
 echo "Mysql配置文件my.cnf路径：/etc/my.cnf"
 echo "Nginx主配置文件nginx.conf路径：/etc/nginx/nginx.conf"
 echo "PHP配置文件php.ini路径： /etc/php.ini"
 echo "php-fpm配置文件php-fpm.conf路径：/etc/php-fpm.conf"
-echo "接下来有如下的配置需要完成："
+echo "接下来有如下的工作需要完成："
 echo "1.修改nginx的配置，配置文件示例在：/etc/nginx/default.d/app.conf"
 echo "2.配置好服务器端口（一般是80）的防火墙和云服务防火墙安全策略"
 echo "3.启动启动nginx（最好纳入到开机服务） "
